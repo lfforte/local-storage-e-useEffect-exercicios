@@ -8,19 +8,13 @@ function App() {
   const [valorDoInput, setValorDoInput] = useState("");
   const [filtro, setFiltro] = useState("")
 
-  // useEffect() => {
-  //   () => {
+  // useEffect(() => {
 
-  //   },
-  //   []
-  // };
+  // }, [])
 
-  // useEffect() => {
-  //   () => {
+  // useEffect(() => {
 
-  //   },
-  //   []
-  // };
+  // }, [])
 
   const pegarValorDoInput = (event) => {
     console.log("aaa");
