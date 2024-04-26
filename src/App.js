@@ -2,34 +2,61 @@ import { useEffect, useState } from 'react'
 import { DivContainer, InputsContainer, ListaDeTarefas, Tarefa } from './style';
 
 
-
 function App() {
   const [tarefas, setTarefas] = useState([]);
-  const [valorDoInput, setValorDoInput] = useState("");
-  const [filtro, setFiltro] = useState("")
+  const [valorDoInput, setValorDoInput] = useState(" ");
+  const [filtro, setFiltro] = useState(" ")
 
-  // useEffect(() => {
+  useEffect(() => { //recupera dados local
+    const tarefasSalvas = localStorage.getItem('tarefas')
+    if (tarefasSalvas) { //se existir tarefas salvas e recupera
+      setTarefas(JSON.parse(tarefasSalvas))
+    }
+  }, [])//executa na primeira vez apenas 
 
-  // }, [])
+  useEffect(() => { //salva dados no local
+    if (tarefas.length > 0) { // precisa ter o if para não deixar zera o array
+      localStorage.setItem('tarefas', JSON.stringify(tarefas))
+    }
+  }, [tarefas])
 
-  // useEffect(() => {
-
-  // }, [])
-
+  //controle do input
   const pegarValorDoInput = (event) => {
-    console.log("aaa");
+    setValorDoInput(event.target.value);
   }
 
+  //criando a váriavel como objeto padrão ao chamar a função criar tarefa
   const criarTarefa = () => {
-    console.log("aaa");
+    const novaTarefa = {
+      id: Date.now(),
+      texto: valorDoInput,
+      completa: false
+    }
+    //copia o estado tarefa e adiciona a nova tarefa no array .push()
+    const copiandoEstado = [...tarefas];
+    copiandoEstado.push(novaTarefa)
+    //setTarefas com o estado novo
+    setTarefas(copiandoEstado);
+    setValorDoInput(' ') //limpa input
   }
 
+  //monitora qual tarefa eu clicar inverte o 'tarefas.completas' e pelo styled ele deixa o  riscado
   const selecionarTarefa = (id) => {
-    console.log("aaa");
+    const mudaStatus = tarefas.map(tarefa => {
+      if (tarefa.id === id) {
+        return {
+          ...tarefa,
+          completa: !tarefa.completa
+        }
+      }
+      return tarefa
+    })
+    setTarefas(mudaStatus)
   }
 
+  //pega o 'valor' selecionado na opção da tela e pela função abaixo filter retorna as opções 
   const pegarValorDoSelect = (event) => {
-    console.log("aaa");
+    setFiltro(event.target.value)
   }
 
 
@@ -69,7 +96,9 @@ function App() {
               completa={tarefa.completa}
               onClick={() => selecionarTarefa(tarefa.id)}
             >
+              {tarefa.id}
               {tarefa.texto}
+              {tarefa.completa ? '  Completa' : '  Inconpleta'}
             </Tarefa>
           )
         })}
