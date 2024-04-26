@@ -13,7 +13,7 @@ export const DivContainer = styled.div`
 
 export const ListaDeTarefas = styled.ul`
   padding: 0;
-  width: 200px;
+  width: 300px;
 `
 
 export const Tarefa = styled.li`
